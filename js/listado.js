@@ -3,20 +3,15 @@ var Listado = function (restaurantes) {
 }
 
 Listado.prototype.reservarUnHorario = function (id, horario) {
-    //Busca el objeto que posee el id dado
     var restaurant = this.buscarRestaurante(id);
-    //Le envía el mensaje al objeto encontrado para que reserve el horario
     restaurant.reservarHorario(horario);
 }
 
 Listado.prototype.calificarRestaurant = function (id, calificacion) {
-    //Busca el objeto que posee el id dado
     var restaurant = this.buscarRestaurante(id);
-    //Le envía el mensaje al objeto encontrado para que agregue la nueva calificación
     restaurant.calificar(calificacion);
 }
 
-//Dado un id, busca el objeto del listado que tiene ese id
 Listado.prototype.buscarRestaurante = function (id) {
     var restauranteEncontrado = this.restaurantes.find(element => element.id === id);
     if (restauranteEncontrado)
@@ -34,21 +29,16 @@ Listado.prototype.eliminarRepetidos = function (arreglo) {
 
 }
 
-//Obtiene todas las ciudades de los restaurantes sin repetidos
 Listado.prototype.obtenerCiudades = function () {
-    //Array donde se van a ir agregando las ciudades (van a estar repetidas)
     var ciudades = [];
-    //Se recorre el array de restaurantes y se va agregando al array creado, todas las ubicaciones o ciudades encontradas
     this.restaurantes.map(function (elemento) {
         ciudades.push(elemento.ubicacion)
 
     })
-    //Se crea un nuevo array donde se van a agregar las ciudades pero sin repetirse
     var ciudadesUnicas = this.eliminarRepetidos(ciudades);
     return ciudadesUnicas.sort();
 }
 
-//Obtiene todos los rubros de los restaurantes sin repetidos. Su funcionamiento es similar a obtC()
 Listado.prototype.obtenerRubros = function () {
     var rubros = [];
     this.restaurantes.map(function (elemento) {
@@ -57,34 +47,22 @@ Listado.prototype.obtenerRubros = function () {
     var rubrosUnicos = this.eliminarRepetidos(rubros);
     return rubrosUnicos.sort();
 }
-
-//Obtiene todos los horarios de los restaurantes (sin repetidos). Está funcionalidad es un poco más compleja ya que un restaurante
-//tiene un array de horarios. Al buscarlos todos vamos a pasar a tener un array de arrays que luego vamos a tener que 
-//convertir en uno solo
 Listado.prototype.obtenerHorarios = function () {
-    //En este array se van a cargar los arrays de horarios, que luego vamos convertir en un solo array
     var arregloHorarios = [];
-    //Recorremos el array de restaurantes y vamos agregando todos los array de horarios
     this.restaurantes.map(function (elemento) {
         arregloHorarios.push(elemento.horarios)
 
     })
-
-    //En este arreglo vamos a poner todos los horarios, uno por uno
-    var horarios = [];
+  var horarios = [];
     arregloHorarios.forEach(function (arreglo) {
         arreglo.forEach(function (horario) {
             horarios.push(horario)
         });
     });
-
-    //En este arreglo vamos a poner todos los horarios pero sin repetidos
-    var horariosUnicos = this.eliminarRepetidos(horarios);
+   var horariosUnicos = this.eliminarRepetidos(horarios);
     return horariosUnicos.sort();
 }
 
-//Función que recibe los filtros que llegan desde el HTML y filtra el arreglo de restaurantes.
-//Solo se filtra si el valor recibido es distinto de null.
 Listado.prototype.obtenerRestaurantes = function (filtroRubro, filtroCiudad, filtroHorario) {
     var restaurantesFiltrados = this.restaurantes;
     if (filtroRubro !== null) {
@@ -102,9 +80,6 @@ Listado.prototype.obtenerRestaurantes = function (filtroRubro, filtroCiudad, fil
     }
     return restaurantesFiltrados;
 }
-
-//Se crea el listado de restaurantes de la aplicación. Si queres agregar un restaurante nuevo, podes agregarlo desde aca, siempre
-//verificando que no se repita el id que agregues.
 
 var listadoDeRestaurantes = [
     new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]),
@@ -132,6 +107,4 @@ var listadoDeRestaurantes = [
     new Restaurant(23, "Chez Moi", "Ensalada", "París", ["11:00", "12:00", "14:30"], "../img/ensalada1.jpg", [8, 4, 5, 5, 5, 5]),
     new Restaurant(24, "Maison Kayser", "Desayuno", "Nueva York", ["21:00", "22:30", "15:00"], "../img/desayuno2.jpg", [9, 5, 7, 6, 7]),
 ];
-
-//Se crea un nuevo listado, asignandole el listado de restaurantes creado anteriormente.
 var listado = new Listado(listadoDeRestaurantes)
